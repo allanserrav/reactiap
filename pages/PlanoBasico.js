@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
 import Section from './components/Section';
-
+import * as RNIap from 'react-native-iap';
 
 const PlanoBasicoScreen = ({ navigation }) => {
     
