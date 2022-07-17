@@ -8,17 +8,8 @@ import { useIAP, withIAPContext } from 'react-native-iap';
 
 const AssinaturasScreen = ({ navigation }) => {
 
-    //const [connected, setConnected] = useState(false);
+    const { connected } = useIAP();
 
-    const {
-        connected
-      } = useIAP();
-
-    useEffect(() => {
-        console.log('initConnection => ', connected);
-        
-      });
-    
     const handlePrepareSubscription = async () => {
         console.log('payment->list->handlePrepareSubscription');
         return true;
