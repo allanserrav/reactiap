@@ -6,7 +6,8 @@ import * as RNIap from 'react-native-iap';
 
 const PlanoBasicoScreen = ({ navigation }) => {
     
-    const sku = 'br.com.goldies.app.basico';
+    //const sku = 'br.com.goldies.app.basico';
+    const sku = 'basico';
     const productIds = Platform.select({
         ios: [
           sku
@@ -50,7 +51,7 @@ const PlanoBasicoScreen = ({ navigation }) => {
     }
 
     const getSubscriptions = () => {
-        console.log('Product IDs', productIds);
+        console.log('getSubscriptions->Product IDs', productIds);
         RNIap.getSubscriptions(productIds)
             .then(subs => {
                 console.log('Subscriptions', subs);
@@ -60,7 +61,23 @@ const PlanoBasicoScreen = ({ navigation }) => {
             });
     }
 
+    const getProducts = () => {
+        console.log('getProducts->Product IDs', productIds);
+        RNIap.getProducts(productIds)
+            .then(produtos => {
+                console.log('Products', produtos);
+            })
+            .catch(err => {
+                console.log('error in getProducts => ', err);
+            });
+    }
+
     const handleOnAssinar = async () => {
+        await requestSubscription();
+        //requestProduct();
+    };
+
+    const requestSubscription = async () => {
         try {
             console.log('Realizando o subscription', sku);
             var result = await RNIap.requestSubscription(sku);
@@ -68,7 +85,17 @@ const PlanoBasicoScreen = ({ navigation }) => {
         } catch (err) {
             console.warn(err.code, err.message);
         }
-    };
+    }
+
+    const requestProduct = async () => {
+        try {
+            console.log('Realizando o product', sku);
+            var result = await RNIap.requestPurchase(sku, false);
+            console.log('Resposta o product', result);
+        } catch (err) {
+            console.warn(err.code, err.message);
+        }
+    }
 
     return (
         <SafeAreaView>
