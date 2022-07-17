@@ -5,7 +5,7 @@ import Section from './components/Section';
 import ButtonSubscription from './components/ButtonSubscription';
 import * as Iap from 'react-native-iap'
 
-const PlanoBasicoScreen = ({ navigation }) => {
+const AssinaturasScreen = ({ navigation }) => {
 
     const [connected, setConnected] = useState(false);
 
@@ -80,4 +80,4 @@ const PlanoBasicoScreen = ({ navigation }) => {
     },
   });
 
-  export default PlanoBasicoScreen;
+  export default AssinaturasScreen;

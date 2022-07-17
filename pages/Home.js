@@ -14,7 +14,7 @@ const HomeScreen = ({ navigation }) => {
                 <Button
                     title="Assinaturas"
                     onPress={() =>
-                        navigation.navigate('basico')
+                        navigation.navigate('assinaturas')
                     }
                 />
                 <Button

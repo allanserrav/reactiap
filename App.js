@@ -2,7 +2,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './pages/Home';
-import PlanoBasicoScreen from './pages/PlanoBasico';
+import AssinaturasScreen from './pages/Assinaturas';
 import PlanoFamiliaScreen from './pages/PlanoFamilia';
 
 const Stack = createNativeStackNavigator();
@@ -17,9 +17,9 @@ const App = () => {
           options={{ title: 'Welcome' }}
         />
         <Stack.Screen
-          name="basico"
-          component={PlanoBasicoScreen}
-          options={{ title: 'Welcome' }}
+          name="assinaturas"
+          component={AssinaturasScreen}
+          options={{ title: 'Assinaturas' }}
         />
          <Stack.Screen
           name="familia"
