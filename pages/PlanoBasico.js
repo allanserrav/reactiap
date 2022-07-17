@@ -1,101 +1,27 @@
 import * as React from 'react';
-import { useEffect } from 'react';
-import { Button, Platform, SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
+import { useState } from 'react';
+import { SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
 import Section from './components/Section';
-import * as RNIap from 'react-native-iap';
+import ButtonSubscription from './components/ButtonSubscription';
 
 const PlanoBasicoScreen = ({ navigation }) => {
     
     //const sku = 'br.com.goldies.app.basico';
-    const sku = 'basico';
-    const productIds = Platform.select({
-        ios: [
-          sku
-        ],
-        android: [
-          sku
-        ]
-      });
 
-    useEffect(() => {
-        initConnection();
-
-        return () => {
-            RNIap.endConnection();
-            console.log('end connection done');
-        };
-    });
-
-    const initConnection = () => {
-        RNIap.initConnection()
-            .then(result => {
-                console.log('connection is => ', result);
-                if (result) {
-                    getPurchases();
-                    getSubscriptions();
-                }
-            })
-            .catch(err => {
-                console.log('error in init => ', err);
-            });
-    }
-
-    const getPurchases = () => {
-        RNIap.getAvailablePurchases()
-            .then(purchases => {
-                console.log('Purchases', purchases);
-            })
-            .catch(err => {
-                console.log('error in getPurchases => ', err);
-            });
-    }
-
-    const getSubscriptions = () => {
-        console.log('getSubscriptions->Product IDs', productIds);
-        RNIap.getSubscriptions(productIds)
-            .then(subs => {
-                console.log('Subscriptions', subs);
-            })
-            .catch(err => {
-                console.log('error in getSubscriptions => ', err);
-            });
-    }
-
-    const getProducts = () => {
-        console.log('getProducts->Product IDs', productIds);
-        RNIap.getProducts(productIds)
-            .then(produtos => {
-                console.log('Products', produtos);
-            })
-            .catch(err => {
-                console.log('error in getProducts => ', err);
-            });
-    }
-
-    const handleOnAssinar = async () => {
-        await requestSubscription();
-        //requestProduct();
+    const [connected, setConnected] = useState(false);
+    
+    const handlePrepareSubscription = async () => {
+        console.log('payment->list->handlePrepareSubscription');
+        return true;
     };
-
-    const requestSubscription = async () => {
-        try {
-            console.log('Realizando o subscription', sku);
-            var result = await RNIap.requestSubscription(sku);
-            console.log('Resposta o subscription', result);
-        } catch (err) {
-            console.warn(err.code, err.message);
-        }
-    }
-
-    const requestProduct = async () => {
-        try {
-            console.log('Realizando o product', sku);
-            var result = await RNIap.requestPurchase(sku, false);
-            console.log('Resposta o product', result);
-        } catch (err) {
-            console.warn(err.code, err.message);
-        }
-    }
+    
+    const handleOnConnected = async (subs) => {
+        console.log('payment->list->handleOnConnected', subs);
+    };
+    
+    const handleOnSubscribed = async (response) => {
+        console.log('payment->list->handleOnSubscribed', response);
+    };
 
     return (
         <SafeAreaView>
@@ -104,9 +30,22 @@ const PlanoBasicoScreen = ({ navigation }) => {
                 <Section title="Plano básico">
                     Assinatura do plano básico.
                 </Section>
-                <Button
-                    title="Assinar"
-                    onPress={handleOnAssinar}
+                <ButtonSubscription
+                    onConnected={handleOnConnected}
+                    onPrepareSubscription={handlePrepareSubscription}
+                    onSubscribed={handleOnSubscribed}
+                    connected
+                    title="Plano básico"
+                    sku="basico"
+                />
+                <br />
+                <ButtonSubscription
+                    onConnected={handleOnConnected}
+                    onPrepareSubscription={handlePrepareSubscription}
+                    onSubscribed={handleOnSubscribed}
+                    connected
+                    title="Plano familia"
+                    sku="familia"
                 />
             </View>
         </SafeAreaView>
