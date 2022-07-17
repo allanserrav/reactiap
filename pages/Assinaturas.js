@@ -4,29 +4,19 @@ import { SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
 import Section from './components/Section';
 import ButtonSubscription from './components/ButtonSubscription';
 import * as Iap from 'react-native-iap'
+import { useIAP, withIAPContext } from 'react-native-iap';
 
 const AssinaturasScreen = ({ navigation }) => {
 
-    const [connected, setConnected] = useState(false);
+    //const [connected, setConnected] = useState(false);
+
+    const {
+        connected
+      } = useIAP();
 
     useEffect(() => {
         console.log('initConnection => ', connected);
-        async function fetchData() {
-            try {
-                if(!connected && await Iap.initConnection()) {
-                    setConnected(true);
-                }
-            }
-            catch(err) {
-                console.log('error in init => ', err);
-            }
-        }
-        fetchData();
         
-        return async () => {
-          await Iap.endConnection();
-          console.log('end connection done');
-        };
       });
     
     const handlePrepareSubscription = async () => {
@@ -80,4 +70,4 @@ const AssinaturasScreen = ({ navigation }) => {
     },
   });
 
-  export default AssinaturasScreen;
+  export default withIAPContext(AssinaturasScreen);

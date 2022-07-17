@@ -29,8 +29,8 @@ export default function ButtonSubscription({
   }, [connected]);
 
   const handleOnPress = async () => {
-    console.log('handleOnPress');
-    if(!RestProps.onPrepareSubscription || await RestProps.onPrepareSubscription()){
+    console.log('handleOnPress ', connected);
+    if(connected && (!RestProps.onPrepareSubscription || await RestProps.onPrepareSubscription())){
       try {
         console.log('handleOnPress->request', sku);
         //var response = await Iap.requestSubscription(sku);
