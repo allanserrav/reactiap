@@ -12,13 +12,13 @@ const HomeScreen = ({ navigation }) => {
                     Selecione o seu plano.
                 </Section>
                 <Button
-                    title="Plano básico"
+                    title="Assinaturas"
                     onPress={() =>
                         navigation.navigate('basico')
                     }
                 />
                 <Button
-                    title="Plano familia"
+                    title="Mudança de assinatura"
                     onPress={() =>
                         navigation.navigate('familia')
                     }

@@ -1,22 +1,41 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
 import Section from './components/Section';
 import ButtonSubscription from './components/ButtonSubscription';
+import * as Iap from 'react-native-iap'
 
 const PlanoBasicoScreen = ({ navigation }) => {
-    
-    //const sku = 'br.com.goldies.app.basico';
 
     const [connected, setConnected] = useState(false);
+
+    useEffect(() => {
+        console.log('initConnection => ', connected);
+        async function fetchData() {
+            try {
+                if(!connected && await Iap.initConnection()) {
+                    setConnected(true);
+                }
+            }
+            catch(err) {
+                console.log('error in init => ', err);
+            }
+        }
+        fetchData();
+        
+        return async () => {
+          await Iap.endConnection();
+          console.log('end connection done');
+        };
+      });
     
     const handlePrepareSubscription = async () => {
         console.log('payment->list->handlePrepareSubscription');
         return true;
     };
-    
-    const handleOnConnected = async (subs) => {
-        console.log('payment->list->handleOnConnected', subs);
+
+    const handleGetSubscriptions = (sku, subs) => {
+        console.log('payment->list->handleGetSubscriptions', sku, subs);
     };
     
     const handleOnSubscribed = async (response) => {
@@ -31,19 +50,19 @@ const PlanoBasicoScreen = ({ navigation }) => {
                     Assinatura do plano básico.
                 </Section>
                 <ButtonSubscription
-                    onConnected={handleOnConnected}
+                    onGetSubscriptions={handleGetSubscriptions}
                     onPrepareSubscription={handlePrepareSubscription}
                     onSubscribed={handleOnSubscribed}
-                    connected
+                    connected={connected}
                     title="Plano básico"
                     sku="basico"
                 />
-                <br />
+                
                 <ButtonSubscription
-                    onConnected={handleOnConnected}
+                    onGetSubscriptions={handleGetSubscriptions}
                     onPrepareSubscription={handlePrepareSubscription}
                     onSubscribed={handleOnSubscribed}
-                    connected
+                    connected={connected}
                     title="Plano familia"
                     sku="familia"
                 />

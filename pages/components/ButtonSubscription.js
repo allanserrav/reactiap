@@ -17,30 +17,16 @@ export default function ButtonSubscription({
   });
 
   useEffect(() => {
-    initConnection();
-    console.log('initConnection => ', connected);
+    console.log('ButtonSubscription->useEffect ', connected);
 
-    return () => {
-      //Iap.endConnection();
-      console.log('end connection done');
-    };
-  }, [connected]);
-
-  const initConnection = async () => {
-    try {
-      //const result = await Iap.initConnection();
-      const result = true;
-      console.log('connection is => ', result);
-      if(result && RestProps.onConnected) {
-        //const subs = await Iap.getSubscriptions(itemSku);
-        const subs = [];
-        await RestProps.onConnected(subs);
-      }
-       
-    } catch (err) {
-      console.log('error in init => ', err);
+    if(connected) {
+      Iap.getSubscriptions(itemSku)
+            .then(async subs => {
+                RestProps.onGetSubscriptions && await RestProps.onGetSubscriptions(sku, subs);
+            });
     }
-  }
+    
+  }, [connected]);
 
   const handleOnPress = async () => {
     console.log('handleOnPress');
