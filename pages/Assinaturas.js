@@ -19,8 +19,8 @@ const AssinaturasScreen = ({ navigation }) => {
         console.log('payment->list->handleGetSubscriptions', sku, subs);
     };
     
-    const handleOnSubscribed = async (response) => {
-        console.log('payment->list->handleOnSubscribed', response);
+    const handleOnSubscribed = async (purchase) => {
+        console.log('payment->list->handleOnSubscribed', purchase);
     };
 
     return (

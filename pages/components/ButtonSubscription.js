@@ -33,10 +33,14 @@ export default function ButtonSubscription({
     if(connected && (!RestProps.onPrepareSubscription || await RestProps.onPrepareSubscription())){
       try {
         console.log('handleOnPress->request', sku);
-        //var response = await Iap.requestSubscription(sku);
-        var response = {};
-        console.log('handleOnPress->requestSubscription->response', response);
-        RestProps.onSubscribed && await RestProps.onSubscribed(response);
+        var purchase = await Iap.requestSubscription(sku);
+        //console.log('handleOnPress->requestSubscription->purchase', purchase);
+        const receipt = purchase.transactionReceipt;
+        if (receipt) {
+          RestProps.onSubscribed && await RestProps.onSubscribed(purchase);
+          const ack = await Iap.finishTransaction(purchase);
+          console.log('handleOnPress->finishTransaction', ack);
+        }
       } catch (err) {
         console.warn(err.code, err.message);
       }
